@@ -1,20 +1,37 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 
-import Home from '../views/Home.vue';
-import About from '../views/About.vue';
-import { routesBuilder } from './router-builder';
+import { ROUTE_NAMES } from '../shared/constants/routes';
+import { TASKS } from '../shared/constants/tasks';
+import { routeBuilder } from './routes';
 
-const routes = [
+const taskPages = import.meta.glob('../pages/task/Task*.vue');
+
+const taskRoutes: RouteRecordRaw[] = TASKS.map((task) => {
+  const pagePath = `../pages/task/Task${task.id}.vue`;
+  const componentLoader = taskPages[pagePath];
+
+  if (!componentLoader) {
+    throw new Error(`Task page is missing: ${pagePath}`);
+  }
+
+  return {
+    path: routeBuilder.task(task.id),
+    name: `${ROUTE_NAMES.task}-${task.id}`,
+    component: componentLoader,
+    meta: {
+      title: task.title,
+      taskId: task.id,
+    },
+  };
+});
+
+const routes: RouteRecordRaw[] = [
   {
-    path: routesBuilder.home(),
-    name: 'home',
-    component: Home,
+    path: routeBuilder.root(),
+    name: ROUTE_NAMES.root,
+    redirect: routeBuilder.task(1),
   },
-  {
-    path: routesBuilder.about(),
-    name: 'about',
-    component: About,
-  },
+  ...taskRoutes,
 ];
 
 export const router = createRouter({
