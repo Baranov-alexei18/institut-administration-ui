@@ -13,13 +13,41 @@ const pageTitle = computed<string>(() => {
 </script>
 
 <template>
-  <div class="app-layout">
+  <div class="shell">
     <AppSidebar />
-    <div class="app-content">
+    <div class="content">
       <AppHeader :title="pageTitle" />
-      <main class="app-main">
+      <main class="main">
         <RouterView />
       </main>
     </div>
   </div>
 </template>
+
+<style scoped>
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  padding: 24px;
+}
+
+@media (max-width: 768px) {
+  .shell {
+    flex-direction: column;
+  }
+
+  .main {
+    padding: 16px;
+  }
+}
+</style>
