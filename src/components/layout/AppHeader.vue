@@ -2,8 +2,8 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { routeBuilder } from '../../router';
 import { useAuth } from '../../hooks/auth/useAuth';
+import { routeBuilder } from '../../router';
 
 defineProps<{
   title: string;

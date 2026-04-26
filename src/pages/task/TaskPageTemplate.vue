@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-import { TASKS } from '../../constants/tasks';
 import TaskContentCard from '../../components/task-content-card/TaskContentCard.vue';
+import { TASKS } from '../../constants/tasks';
 
 const props = defineProps<{
   taskId: number;

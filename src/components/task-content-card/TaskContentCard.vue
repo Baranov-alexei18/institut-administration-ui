@@ -15,7 +15,8 @@ defineProps<{
     <div class="result">
       <h3 class="result-title">Future Result</h3>
       <p class="result-desc">
-        This section is reserved for implementation output, charts, tables, or analysis for this task.
+        This section is reserved for implementation output, charts, tables, or analysis for this
+        task.
       </p>
     </div>
   </section>

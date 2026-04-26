@@ -7,6 +7,7 @@ Learn more about the recommended Project Setup and IDE Support in the [Vue Docs 
 # Project
 
 ## Stack
+
 - Vue 3
 - TypeScript
 - Vite
@@ -14,11 +15,13 @@ Learn more about the recommended Project Setup and IDE Support in the [Vue Docs 
 - Pinia
 
 ## Architecture
+
 - Feature-based structure
 - Components are dumb by default
 - Business logic in composables
 
 ## Rules
+
 - No direct API calls in components
 - Use services layer
 - Use route builder (routesBuilder)

@@ -2,9 +2,9 @@
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { routeBuilder } from '../../router';
-import { useAuth } from '../../hooks/auth/useAuth';
 import { TASKS } from '../../constants/tasks';
+import { useAuth } from '../../hooks/auth/useAuth';
+import { routeBuilder } from '../../router';
 
 const route = useRoute();
 const isCollapsed = ref<boolean>(false);

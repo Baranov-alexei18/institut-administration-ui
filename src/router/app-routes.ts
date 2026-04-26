@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import { TASKS } from '../constants/tasks';
 import { ROUTE_NAMES } from '../constants/routes-names';
+import { TASKS } from '../constants/tasks';
 import { routeBuilder } from './routes';
 
 const taskPages = import.meta.glob('../pages/task/Task*.vue');
