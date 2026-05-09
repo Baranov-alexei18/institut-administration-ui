@@ -22,1101 +22,1010 @@ import type {
   TeachersControllerGetExaminersParams,
   TeachersControllerGetTeachersParams,
   TeachersControllerGetThesisSupervisorsParams,
-  TeachersControllerGetWorkloadParams
+  TeachersControllerGetWorkloadParams,
 } from './institutAdministrationAPI.schemas';
 
 import { fetchClient } from '../client/fetchClient';
 
 export type appControllerGetHelloResponse200 = {
-  data: void
-  status: 200
-}
+  data: void;
+  status: 200;
+};
 
-export type appControllerGetHelloResponseSuccess = (appControllerGetHelloResponse200) & {
+export type appControllerGetHelloResponseSuccess = appControllerGetHelloResponse200 & {
   headers: Headers;
 };
-;
-
-export type appControllerGetHelloResponse = (appControllerGetHelloResponseSuccess)
+export type appControllerGetHelloResponse = appControllerGetHelloResponseSuccess;
 
 export const getAppControllerGetHelloUrl = () => {
+  return `/api/v1`;
+};
 
-
-
-
-  return `/api/v1`
-}
-
-export const appControllerGetHello = async ( options?: RequestInit): Promise<appControllerGetHelloResponse> => {
-
-  return fetchClient<appControllerGetHelloResponse>(getAppControllerGetHelloUrl(),
-  {
+export const appControllerGetHello = async (
+  options?: RequestInit,
+): Promise<appControllerGetHelloResponse> => {
+  return fetchClient<appControllerGetHelloResponse>(getAppControllerGetHelloUrl(), {
     ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+    method: 'GET',
+  });
+};
 
 export type usersControllerGetUsersResponse200 = {
-  data: void
-  status: 200
-}
+  data: void;
+  status: 200;
+};
 
-export type usersControllerGetUsersResponseSuccess = (usersControllerGetUsersResponse200) & {
+export type usersControllerGetUsersResponseSuccess = usersControllerGetUsersResponse200 & {
   headers: Headers;
 };
-;
-
-export type usersControllerGetUsersResponse = (usersControllerGetUsersResponseSuccess)
+export type usersControllerGetUsersResponse = usersControllerGetUsersResponseSuccess;
 
 export const getUsersControllerGetUsersUrl = () => {
+  return `/api/v1/users`;
+};
 
-
-
-
-  return `/api/v1/users`
-}
-
-export const usersControllerGetUsers = async ( options?: RequestInit): Promise<usersControllerGetUsersResponse> => {
-
-  return fetchClient<usersControllerGetUsersResponse>(getUsersControllerGetUsersUrl(),
-  {
+export const usersControllerGetUsers = async (
+  options?: RequestInit,
+): Promise<usersControllerGetUsersResponse> => {
+  return fetchClient<usersControllerGetUsersResponse>(getUsersControllerGetUsersUrl(), {
     ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+    method: 'GET',
+  });
+};
 
 export type usersControllerCreateResponse201 = {
-  data: void
-  status: 201
-}
+  data: void;
+  status: 201;
+};
 
-export type usersControllerCreateResponseSuccess = (usersControllerCreateResponse201) & {
+export type usersControllerCreateResponseSuccess = usersControllerCreateResponse201 & {
   headers: Headers;
 };
-;
-
-export type usersControllerCreateResponse = (usersControllerCreateResponseSuccess)
+export type usersControllerCreateResponse = usersControllerCreateResponseSuccess;
 
 export const getUsersControllerCreateUrl = () => {
+  return `/api/v1/users`;
+};
 
-
-
-
-  return `/api/v1/users`
-}
-
-export const usersControllerCreate = async (createUserDto: CreateUserDto, options?: RequestInit): Promise<usersControllerCreateResponse> => {
-
-  return fetchClient<usersControllerCreateResponse>(getUsersControllerCreateUrl(),
-  {
+export const usersControllerCreate = async (
+  createUserDto: CreateUserDto,
+  options?: RequestInit,
+): Promise<usersControllerCreateResponse> => {
+  return fetchClient<usersControllerCreateResponse>(getUsersControllerCreateUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      createUserDto,)
-  }
-);}
-
-
+    body: JSON.stringify(createUserDto),
+  });
+};
 
 export type usersControllerGetByIdResponse200 = {
-  data: void
-  status: 200
-}
+  data: void;
+  status: 200;
+};
 
-export type usersControllerGetByIdResponseSuccess = (usersControllerGetByIdResponse200) & {
+export type usersControllerGetByIdResponseSuccess = usersControllerGetByIdResponse200 & {
   headers: Headers;
 };
-;
+export type usersControllerGetByIdResponse = usersControllerGetByIdResponseSuccess;
 
-export type usersControllerGetByIdResponse = (usersControllerGetByIdResponseSuccess)
+export const getUsersControllerGetByIdUrl = (id: number) => {
+  return `/api/v1/users/${id}`;
+};
 
-export const getUsersControllerGetByIdUrl = (id: number,) => {
-
-
-
-
-  return `/api/v1/users/${id}`
-}
-
-export const usersControllerGetById = async (id: number, options?: RequestInit): Promise<usersControllerGetByIdResponse> => {
-
-  return fetchClient<usersControllerGetByIdResponse>(getUsersControllerGetByIdUrl(id),
-  {
+export const usersControllerGetById = async (
+  id: number,
+  options?: RequestInit,
+): Promise<usersControllerGetByIdResponse> => {
+  return fetchClient<usersControllerGetByIdResponse>(getUsersControllerGetByIdUrl(id), {
     ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+    method: 'GET',
+  });
+};
 
 export type usersControllerDeleteResponse200 = {
-  data: void
-  status: 200
-}
+  data: void;
+  status: 200;
+};
 
-export type usersControllerDeleteResponseSuccess = (usersControllerDeleteResponse200) & {
+export type usersControllerDeleteResponseSuccess = usersControllerDeleteResponse200 & {
   headers: Headers;
 };
-;
+export type usersControllerDeleteResponse = usersControllerDeleteResponseSuccess;
 
-export type usersControllerDeleteResponse = (usersControllerDeleteResponseSuccess)
+export const getUsersControllerDeleteUrl = (id: number) => {
+  return `/api/v1/users/${id}`;
+};
 
-export const getUsersControllerDeleteUrl = (id: number,) => {
-
-
-
-
-  return `/api/v1/users/${id}`
-}
-
-export const usersControllerDelete = async (id: number, options?: RequestInit): Promise<usersControllerDeleteResponse> => {
-
-  return fetchClient<usersControllerDeleteResponse>(getUsersControllerDeleteUrl(id),
-  {
+export const usersControllerDelete = async (
+  id: number,
+  options?: RequestInit,
+): Promise<usersControllerDeleteResponse> => {
+  return fetchClient<usersControllerDeleteResponse>(getUsersControllerDeleteUrl(id), {
     ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
-
+    method: 'DELETE',
+  });
+};
 
 export type authControllerRegisterResponse201 = {
-  data: void
-  status: 201
-}
+  data: void;
+  status: 201;
+};
 
-export type authControllerRegisterResponseSuccess = (authControllerRegisterResponse201) & {
+export type authControllerRegisterResponseSuccess = authControllerRegisterResponse201 & {
   headers: Headers;
 };
-;
-
-export type authControllerRegisterResponse = (authControllerRegisterResponseSuccess)
+export type authControllerRegisterResponse = authControllerRegisterResponseSuccess;
 
 export const getAuthControllerRegisterUrl = () => {
+  return `/api/v1/auth/register`;
+};
 
-
-
-
-  return `/api/v1/auth/register`
-}
-
-export const authControllerRegister = async (createUserDto: CreateUserDto, options?: RequestInit): Promise<authControllerRegisterResponse> => {
-
-  return fetchClient<authControllerRegisterResponse>(getAuthControllerRegisterUrl(),
-  {
+export const authControllerRegister = async (
+  createUserDto: CreateUserDto,
+  options?: RequestInit,
+): Promise<authControllerRegisterResponse> => {
+  return fetchClient<authControllerRegisterResponse>(getAuthControllerRegisterUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      createUserDto,)
-  }
-);}
-
-
+    body: JSON.stringify(createUserDto),
+  });
+};
 
 export type authControllerLoginResponse201 = {
-  data: void
-  status: 201
-}
+  data: void;
+  status: 201;
+};
 
-export type authControllerLoginResponseSuccess = (authControllerLoginResponse201) & {
+export type authControllerLoginResponseSuccess = authControllerLoginResponse201 & {
   headers: Headers;
 };
-;
-
-export type authControllerLoginResponse = (authControllerLoginResponseSuccess)
+export type authControllerLoginResponse = authControllerLoginResponseSuccess;
 
 export const getAuthControllerLoginUrl = () => {
+  return `/api/v1/auth/login`;
+};
 
-
-
-
-  return `/api/v1/auth/login`
-}
-
-export const authControllerLogin = async (createUserDto: CreateUserDto, options?: RequestInit): Promise<authControllerLoginResponse> => {
-
-  return fetchClient<authControllerLoginResponse>(getAuthControllerLoginUrl(),
-  {
+export const authControllerLogin = async (
+  createUserDto: CreateUserDto,
+  options?: RequestInit,
+): Promise<authControllerLoginResponse> => {
+  return fetchClient<authControllerLoginResponse>(getAuthControllerLoginUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      createUserDto,)
-  }
-);}
-
-
+    body: JSON.stringify(createUserDto),
+  });
+};
 
 export type authControllerRefreshResponse201 = {
-  data: void
-  status: 201
-}
+  data: void;
+  status: 201;
+};
 
-export type authControllerRefreshResponseSuccess = (authControllerRefreshResponse201) & {
+export type authControllerRefreshResponseSuccess = authControllerRefreshResponse201 & {
   headers: Headers;
 };
-;
-
-export type authControllerRefreshResponse = (authControllerRefreshResponseSuccess)
+export type authControllerRefreshResponse = authControllerRefreshResponseSuccess;
 
 export const getAuthControllerRefreshUrl = () => {
+  return `/api/v1/auth/refresh`;
+};
 
-
-
-
-  return `/api/v1/auth/refresh`
-}
-
-export const authControllerRefresh = async ( options?: RequestInit): Promise<authControllerRefreshResponse> => {
-
-  return fetchClient<authControllerRefreshResponse>(getAuthControllerRefreshUrl(),
-  {
+export const authControllerRefresh = async (
+  options?: RequestInit,
+): Promise<authControllerRefreshResponse> => {
+  return fetchClient<authControllerRefreshResponse>(getAuthControllerRefreshUrl(), {
     ...options,
-    method: 'POST'
-
-
-  }
-);}
-
-
+    method: 'POST',
+  });
+};
 
 export type studentsControllerGetStudentsResponse200 = {
-  data: void
-  status: 200
-}
-
-export type studentsControllerGetStudentsResponseSuccess = (studentsControllerGetStudentsResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type studentsControllerGetStudentsResponse = (studentsControllerGetStudentsResponseSuccess)
+export type studentsControllerGetStudentsResponseSuccess =
+  studentsControllerGetStudentsResponse200 & {
+    headers: Headers;
+  };
+export type studentsControllerGetStudentsResponse = studentsControllerGetStudentsResponseSuccess;
 
-export const getStudentsControllerGetStudentsUrl = (params?: StudentsControllerGetStudentsParams,) => {
+export const getStudentsControllerGetStudentsUrl = (
+  params?: StudentsControllerGetStudentsParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/students?${stringifiedParams}` : `/api/v1/students`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/students?${stringifiedParams}`
+    : `/api/v1/students`;
+};
 
-export const studentsControllerGetStudents = async (params?: StudentsControllerGetStudentsParams, options?: RequestInit): Promise<studentsControllerGetStudentsResponse> => {
-
-  return fetchClient<studentsControllerGetStudentsResponse>(getStudentsControllerGetStudentsUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const studentsControllerGetStudents = async (
+  params?: StudentsControllerGetStudentsParams,
+  options?: RequestInit,
+): Promise<studentsControllerGetStudentsResponse> => {
+  return fetchClient<studentsControllerGetStudentsResponse>(
+    getStudentsControllerGetStudentsUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type studentsControllerCreateResponse201 = {
-  data: void
-  status: 201
-}
+  data: void;
+  status: 201;
+};
 
-export type studentsControllerCreateResponseSuccess = (studentsControllerCreateResponse201) & {
+export type studentsControllerCreateResponseSuccess = studentsControllerCreateResponse201 & {
   headers: Headers;
 };
-;
-
-export type studentsControllerCreateResponse = (studentsControllerCreateResponseSuccess)
+export type studentsControllerCreateResponse = studentsControllerCreateResponseSuccess;
 
 export const getStudentsControllerCreateUrl = () => {
+  return `/api/v1/students`;
+};
 
-
-
-
-  return `/api/v1/students`
-}
-
-export const studentsControllerCreate = async (createStudentDto: CreateStudentDto, options?: RequestInit): Promise<studentsControllerCreateResponse> => {
-
-  return fetchClient<studentsControllerCreateResponse>(getStudentsControllerCreateUrl(),
-  {
+export const studentsControllerCreate = async (
+  createStudentDto: CreateStudentDto,
+  options?: RequestInit,
+): Promise<studentsControllerCreateResponse> => {
+  return fetchClient<studentsControllerCreateResponse>(getStudentsControllerCreateUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      createStudentDto,)
-  }
-);}
-
-
+    body: JSON.stringify(createStudentDto),
+  });
+};
 
 export type studentsControllerGetByAssessmentResponse200 = {
-  data: void
-  status: 200
-}
-
-export type studentsControllerGetByAssessmentResponseSuccess = (studentsControllerGetByAssessmentResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type studentsControllerGetByAssessmentResponse = (studentsControllerGetByAssessmentResponseSuccess)
+export type studentsControllerGetByAssessmentResponseSuccess =
+  studentsControllerGetByAssessmentResponse200 & {
+    headers: Headers;
+  };
+export type studentsControllerGetByAssessmentResponse =
+  studentsControllerGetByAssessmentResponseSuccess;
 
-export const getStudentsControllerGetByAssessmentUrl = (params?: StudentsControllerGetByAssessmentParams,) => {
+export const getStudentsControllerGetByAssessmentUrl = (
+  params?: StudentsControllerGetByAssessmentParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/students/by-assessment?${stringifiedParams}` : `/api/v1/students/by-assessment`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/students/by-assessment?${stringifiedParams}`
+    : `/api/v1/students/by-assessment`;
+};
 
-export const studentsControllerGetByAssessment = async (params?: StudentsControllerGetByAssessmentParams, options?: RequestInit): Promise<studentsControllerGetByAssessmentResponse> => {
-
-  return fetchClient<studentsControllerGetByAssessmentResponse>(getStudentsControllerGetByAssessmentUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const studentsControllerGetByAssessment = async (
+  params?: StudentsControllerGetByAssessmentParams,
+  options?: RequestInit,
+): Promise<studentsControllerGetByAssessmentResponse> => {
+  return fetchClient<studentsControllerGetByAssessmentResponse>(
+    getStudentsControllerGetByAssessmentUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type studentsControllerGetSessionStudentsResponse200 = {
-  data: void
-  status: 200
-}
-
-export type studentsControllerGetSessionStudentsResponseSuccess = (studentsControllerGetSessionStudentsResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type studentsControllerGetSessionStudentsResponse = (studentsControllerGetSessionStudentsResponseSuccess)
+export type studentsControllerGetSessionStudentsResponseSuccess =
+  studentsControllerGetSessionStudentsResponse200 & {
+    headers: Headers;
+  };
+export type studentsControllerGetSessionStudentsResponse =
+  studentsControllerGetSessionStudentsResponseSuccess;
 
-export const getStudentsControllerGetSessionStudentsUrl = (params: StudentsControllerGetSessionStudentsParams,) => {
+export const getStudentsControllerGetSessionStudentsUrl = (
+  params: StudentsControllerGetSessionStudentsParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/students/session?${stringifiedParams}` : `/api/v1/students/session`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/students/session?${stringifiedParams}`
+    : `/api/v1/students/session`;
+};
 
-export const studentsControllerGetSessionStudents = async (params: StudentsControllerGetSessionStudentsParams, options?: RequestInit): Promise<studentsControllerGetSessionStudentsResponse> => {
-
-  return fetchClient<studentsControllerGetSessionStudentsResponse>(getStudentsControllerGetSessionStudentsUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const studentsControllerGetSessionStudents = async (
+  params: StudentsControllerGetSessionStudentsParams,
+  options?: RequestInit,
+): Promise<studentsControllerGetSessionStudentsResponse> => {
+  return fetchClient<studentsControllerGetSessionStudentsResponse>(
+    getStudentsControllerGetSessionStudentsUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type studentsControllerGetStudentsByTeacherResponse200 = {
-  data: void
-  status: 200
-}
-
-export type studentsControllerGetStudentsByTeacherResponseSuccess = (studentsControllerGetStudentsByTeacherResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type studentsControllerGetStudentsByTeacherResponse = (studentsControllerGetStudentsByTeacherResponseSuccess)
+export type studentsControllerGetStudentsByTeacherResponseSuccess =
+  studentsControllerGetStudentsByTeacherResponse200 & {
+    headers: Headers;
+  };
+export type studentsControllerGetStudentsByTeacherResponse =
+  studentsControllerGetStudentsByTeacherResponseSuccess;
 
-export const getStudentsControllerGetStudentsByTeacherUrl = (params?: StudentsControllerGetStudentsByTeacherParams,) => {
+export const getStudentsControllerGetStudentsByTeacherUrl = (
+  params?: StudentsControllerGetStudentsByTeacherParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/students/by-teacher?${stringifiedParams}` : `/api/v1/students/by-teacher`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/students/by-teacher?${stringifiedParams}`
+    : `/api/v1/students/by-teacher`;
+};
 
-export const studentsControllerGetStudentsByTeacher = async (params?: StudentsControllerGetStudentsByTeacherParams, options?: RequestInit): Promise<studentsControllerGetStudentsByTeacherResponse> => {
-
-  return fetchClient<studentsControllerGetStudentsByTeacherResponse>(getStudentsControllerGetStudentsByTeacherUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const studentsControllerGetStudentsByTeacher = async (
+  params?: StudentsControllerGetStudentsByTeacherParams,
+  options?: RequestInit,
+): Promise<studentsControllerGetStudentsByTeacherResponse> => {
+  return fetchClient<studentsControllerGetStudentsByTeacherResponse>(
+    getStudentsControllerGetStudentsByTeacherUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type studentsControllerGetThesesResponse200 = {
-  data: void
-  status: 200
-}
+  data: void;
+  status: 200;
+};
 
-export type studentsControllerGetThesesResponseSuccess = (studentsControllerGetThesesResponse200) & {
+export type studentsControllerGetThesesResponseSuccess = studentsControllerGetThesesResponse200 & {
   headers: Headers;
 };
-;
+export type studentsControllerGetThesesResponse = studentsControllerGetThesesResponseSuccess;
 
-export type studentsControllerGetThesesResponse = (studentsControllerGetThesesResponseSuccess)
-
-export const getStudentsControllerGetThesesUrl = (params?: StudentsControllerGetThesesParams,) => {
+export const getStudentsControllerGetThesesUrl = (params?: StudentsControllerGetThesesParams) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/students/theses?${stringifiedParams}` : `/api/v1/students/theses`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/students/theses?${stringifiedParams}`
+    : `/api/v1/students/theses`;
+};
 
-export const studentsControllerGetTheses = async (params?: StudentsControllerGetThesesParams, options?: RequestInit): Promise<studentsControllerGetThesesResponse> => {
-
-  return fetchClient<studentsControllerGetThesesResponse>(getStudentsControllerGetThesesUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const studentsControllerGetTheses = async (
+  params?: StudentsControllerGetThesesParams,
+  options?: RequestInit,
+): Promise<studentsControllerGetThesesResponse> => {
+  return fetchClient<studentsControllerGetThesesResponse>(
+    getStudentsControllerGetThesesUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type teachersControllerGetTeachersResponse200 = {
-  data: void
-  status: 200
-}
-
-export type teachersControllerGetTeachersResponseSuccess = (teachersControllerGetTeachersResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type teachersControllerGetTeachersResponse = (teachersControllerGetTeachersResponseSuccess)
+export type teachersControllerGetTeachersResponseSuccess =
+  teachersControllerGetTeachersResponse200 & {
+    headers: Headers;
+  };
+export type teachersControllerGetTeachersResponse = teachersControllerGetTeachersResponseSuccess;
 
-export const getTeachersControllerGetTeachersUrl = (params?: TeachersControllerGetTeachersParams,) => {
+export const getTeachersControllerGetTeachersUrl = (
+  params?: TeachersControllerGetTeachersParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/teachers?${stringifiedParams}` : `/api/v1/teachers`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/teachers?${stringifiedParams}`
+    : `/api/v1/teachers`;
+};
 
-export const teachersControllerGetTeachers = async (params?: TeachersControllerGetTeachersParams, options?: RequestInit): Promise<teachersControllerGetTeachersResponse> => {
-
-  return fetchClient<teachersControllerGetTeachersResponse>(getTeachersControllerGetTeachersUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const teachersControllerGetTeachers = async (
+  params?: TeachersControllerGetTeachersParams,
+  options?: RequestInit,
+): Promise<teachersControllerGetTeachersResponse> => {
+  return fetchClient<teachersControllerGetTeachersResponse>(
+    getTeachersControllerGetTeachersUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type teachersControllerCreateResponse201 = {
-  data: void
-  status: 201
-}
+  data: void;
+  status: 201;
+};
 
-export type teachersControllerCreateResponseSuccess = (teachersControllerCreateResponse201) & {
+export type teachersControllerCreateResponseSuccess = teachersControllerCreateResponse201 & {
   headers: Headers;
 };
-;
-
-export type teachersControllerCreateResponse = (teachersControllerCreateResponseSuccess)
+export type teachersControllerCreateResponse = teachersControllerCreateResponseSuccess;
 
 export const getTeachersControllerCreateUrl = () => {
+  return `/api/v1/teachers`;
+};
 
-
-
-
-  return `/api/v1/teachers`
-}
-
-export const teachersControllerCreate = async (createTeacherDto: CreateTeacherDto, options?: RequestInit): Promise<teachersControllerCreateResponse> => {
-
-  return fetchClient<teachersControllerCreateResponse>(getTeachersControllerCreateUrl(),
-  {
+export const teachersControllerCreate = async (
+  createTeacherDto: CreateTeacherDto,
+  options?: RequestInit,
+): Promise<teachersControllerCreateResponse> => {
+  return fetchClient<teachersControllerCreateResponse>(getTeachersControllerCreateUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      createTeacherDto,)
-  }
-);}
-
-
+    body: JSON.stringify(createTeacherDto),
+  });
+};
 
 export type teachersControllerGetByDisciplineResponse200 = {
-  data: void
-  status: 200
-}
-
-export type teachersControllerGetByDisciplineResponseSuccess = (teachersControllerGetByDisciplineResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type teachersControllerGetByDisciplineResponse = (teachersControllerGetByDisciplineResponseSuccess)
+export type teachersControllerGetByDisciplineResponseSuccess =
+  teachersControllerGetByDisciplineResponse200 & {
+    headers: Headers;
+  };
+export type teachersControllerGetByDisciplineResponse =
+  teachersControllerGetByDisciplineResponseSuccess;
 
-export const getTeachersControllerGetByDisciplineUrl = (params?: TeachersControllerGetByDisciplineParams,) => {
+export const getTeachersControllerGetByDisciplineUrl = (
+  params?: TeachersControllerGetByDisciplineParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/teachers/by-discipline?${stringifiedParams}` : `/api/v1/teachers/by-discipline`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/teachers/by-discipline?${stringifiedParams}`
+    : `/api/v1/teachers/by-discipline`;
+};
 
-export const teachersControllerGetByDiscipline = async (params?: TeachersControllerGetByDisciplineParams, options?: RequestInit): Promise<teachersControllerGetByDisciplineResponse> => {
-
-  return fetchClient<teachersControllerGetByDisciplineResponse>(getTeachersControllerGetByDisciplineUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const teachersControllerGetByDiscipline = async (
+  params?: TeachersControllerGetByDisciplineParams,
+  options?: RequestInit,
+): Promise<teachersControllerGetByDisciplineResponse> => {
+  return fetchClient<teachersControllerGetByDisciplineResponse>(
+    getTeachersControllerGetByDisciplineUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type teachersControllerGetByLessonsResponse200 = {
-  data: void
-  status: 200
-}
-
-export type teachersControllerGetByLessonsResponseSuccess = (teachersControllerGetByLessonsResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type teachersControllerGetByLessonsResponse = (teachersControllerGetByLessonsResponseSuccess)
+export type teachersControllerGetByLessonsResponseSuccess =
+  teachersControllerGetByLessonsResponse200 & {
+    headers: Headers;
+  };
+export type teachersControllerGetByLessonsResponse = teachersControllerGetByLessonsResponseSuccess;
 
-export const getTeachersControllerGetByLessonsUrl = (params?: TeachersControllerGetByLessonsParams,) => {
+export const getTeachersControllerGetByLessonsUrl = (
+  params?: TeachersControllerGetByLessonsParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/teachers/by-lessons?${stringifiedParams}` : `/api/v1/teachers/by-lessons`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/teachers/by-lessons?${stringifiedParams}`
+    : `/api/v1/teachers/by-lessons`;
+};
 
-export const teachersControllerGetByLessons = async (params?: TeachersControllerGetByLessonsParams, options?: RequestInit): Promise<teachersControllerGetByLessonsResponse> => {
-
-  return fetchClient<teachersControllerGetByLessonsResponse>(getTeachersControllerGetByLessonsUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const teachersControllerGetByLessons = async (
+  params?: TeachersControllerGetByLessonsParams,
+  options?: RequestInit,
+): Promise<teachersControllerGetByLessonsResponse> => {
+  return fetchClient<teachersControllerGetByLessonsResponse>(
+    getTeachersControllerGetByLessonsUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type teachersControllerGetExaminersResponse200 = {
-  data: void
-  status: 200
-}
-
-export type teachersControllerGetExaminersResponseSuccess = (teachersControllerGetExaminersResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type teachersControllerGetExaminersResponse = (teachersControllerGetExaminersResponseSuccess)
+export type teachersControllerGetExaminersResponseSuccess =
+  teachersControllerGetExaminersResponse200 & {
+    headers: Headers;
+  };
+export type teachersControllerGetExaminersResponse = teachersControllerGetExaminersResponseSuccess;
 
-export const getTeachersControllerGetExaminersUrl = (params?: TeachersControllerGetExaminersParams,) => {
+export const getTeachersControllerGetExaminersUrl = (
+  params?: TeachersControllerGetExaminersParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/teachers/examiners?${stringifiedParams}` : `/api/v1/teachers/examiners`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/teachers/examiners?${stringifiedParams}`
+    : `/api/v1/teachers/examiners`;
+};
 
-export const teachersControllerGetExaminers = async (params?: TeachersControllerGetExaminersParams, options?: RequestInit): Promise<teachersControllerGetExaminersResponse> => {
-
-  return fetchClient<teachersControllerGetExaminersResponse>(getTeachersControllerGetExaminersUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const teachersControllerGetExaminers = async (
+  params?: TeachersControllerGetExaminersParams,
+  options?: RequestInit,
+): Promise<teachersControllerGetExaminersResponse> => {
+  return fetchClient<teachersControllerGetExaminersResponse>(
+    getTeachersControllerGetExaminersUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type teachersControllerGetThesisSupervisorsResponse200 = {
-  data: void
-  status: 200
-}
-
-export type teachersControllerGetThesisSupervisorsResponseSuccess = (teachersControllerGetThesisSupervisorsResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type teachersControllerGetThesisSupervisorsResponse = (teachersControllerGetThesisSupervisorsResponseSuccess)
+export type teachersControllerGetThesisSupervisorsResponseSuccess =
+  teachersControllerGetThesisSupervisorsResponse200 & {
+    headers: Headers;
+  };
+export type teachersControllerGetThesisSupervisorsResponse =
+  teachersControllerGetThesisSupervisorsResponseSuccess;
 
-export const getTeachersControllerGetThesisSupervisorsUrl = (params?: TeachersControllerGetThesisSupervisorsParams,) => {
+export const getTeachersControllerGetThesisSupervisorsUrl = (
+  params?: TeachersControllerGetThesisSupervisorsParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/teachers/thesis-supervisors?${stringifiedParams}` : `/api/v1/teachers/thesis-supervisors`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/teachers/thesis-supervisors?${stringifiedParams}`
+    : `/api/v1/teachers/thesis-supervisors`;
+};
 
-export const teachersControllerGetThesisSupervisors = async (params?: TeachersControllerGetThesisSupervisorsParams, options?: RequestInit): Promise<teachersControllerGetThesisSupervisorsResponse> => {
-
-  return fetchClient<teachersControllerGetThesisSupervisorsResponse>(getTeachersControllerGetThesisSupervisorsUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const teachersControllerGetThesisSupervisors = async (
+  params?: TeachersControllerGetThesisSupervisorsParams,
+  options?: RequestInit,
+): Promise<teachersControllerGetThesisSupervisorsResponse> => {
+  return fetchClient<teachersControllerGetThesisSupervisorsResponse>(
+    getTeachersControllerGetThesisSupervisorsUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type teachersControllerGetWorkloadResponse200 = {
-  data: void
-  status: 200
-}
-
-export type teachersControllerGetWorkloadResponseSuccess = (teachersControllerGetWorkloadResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type teachersControllerGetWorkloadResponse = (teachersControllerGetWorkloadResponseSuccess)
+export type teachersControllerGetWorkloadResponseSuccess =
+  teachersControllerGetWorkloadResponse200 & {
+    headers: Headers;
+  };
+export type teachersControllerGetWorkloadResponse = teachersControllerGetWorkloadResponseSuccess;
 
-export const getTeachersControllerGetWorkloadUrl = (params: TeachersControllerGetWorkloadParams,) => {
+export const getTeachersControllerGetWorkloadUrl = (
+  params: TeachersControllerGetWorkloadParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/teachers/workload?${stringifiedParams}` : `/api/v1/teachers/workload`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/teachers/workload?${stringifiedParams}`
+    : `/api/v1/teachers/workload`;
+};
 
-export const teachersControllerGetWorkload = async (params: TeachersControllerGetWorkloadParams, options?: RequestInit): Promise<teachersControllerGetWorkloadResponse> => {
-
-  return fetchClient<teachersControllerGetWorkloadResponse>(getTeachersControllerGetWorkloadUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const teachersControllerGetWorkload = async (
+  params: TeachersControllerGetWorkloadParams,
+  options?: RequestInit,
+): Promise<teachersControllerGetWorkloadResponse> => {
+  return fetchClient<teachersControllerGetWorkloadResponse>(
+    getTeachersControllerGetWorkloadUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type dissertationsControllerGetAllResponse200 = {
-  data: void
-  status: 200
-}
-
-export type dissertationsControllerGetAllResponseSuccess = (dissertationsControllerGetAllResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type dissertationsControllerGetAllResponse = (dissertationsControllerGetAllResponseSuccess)
+export type dissertationsControllerGetAllResponseSuccess =
+  dissertationsControllerGetAllResponse200 & {
+    headers: Headers;
+  };
+export type dissertationsControllerGetAllResponse = dissertationsControllerGetAllResponseSuccess;
 
-export const getDissertationsControllerGetAllUrl = (params?: DissertationsControllerGetAllParams,) => {
+export const getDissertationsControllerGetAllUrl = (
+  params?: DissertationsControllerGetAllParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/dissertations?${stringifiedParams}` : `/api/v1/dissertations`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/dissertations?${stringifiedParams}`
+    : `/api/v1/dissertations`;
+};
 
-export const dissertationsControllerGetAll = async (params?: DissertationsControllerGetAllParams, options?: RequestInit): Promise<dissertationsControllerGetAllResponse> => {
-
-  return fetchClient<dissertationsControllerGetAllResponse>(getDissertationsControllerGetAllUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const dissertationsControllerGetAll = async (
+  params?: DissertationsControllerGetAllParams,
+  options?: RequestInit,
+): Promise<dissertationsControllerGetAllResponse> => {
+  return fetchClient<dissertationsControllerGetAllResponse>(
+    getDissertationsControllerGetAllUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type dissertationsControllerGetCountResponse200 = {
-  data: void
-  status: 200
-}
-
-export type dissertationsControllerGetCountResponseSuccess = (dissertationsControllerGetCountResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type dissertationsControllerGetCountResponse = (dissertationsControllerGetCountResponseSuccess)
+export type dissertationsControllerGetCountResponseSuccess =
+  dissertationsControllerGetCountResponse200 & {
+    headers: Headers;
+  };
+export type dissertationsControllerGetCountResponse =
+  dissertationsControllerGetCountResponseSuccess;
 
-export const getDissertationsControllerGetCountUrl = (params?: DissertationsControllerGetCountParams,) => {
+export const getDissertationsControllerGetCountUrl = (
+  params?: DissertationsControllerGetCountParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/dissertations/count?${stringifiedParams}` : `/api/v1/dissertations/count`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/dissertations/count?${stringifiedParams}`
+    : `/api/v1/dissertations/count`;
+};
 
-export const dissertationsControllerGetCount = async (params?: DissertationsControllerGetCountParams, options?: RequestInit): Promise<dissertationsControllerGetCountResponse> => {
-
-  return fetchClient<dissertationsControllerGetCountResponse>(getDissertationsControllerGetCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const dissertationsControllerGetCount = async (
+  params?: DissertationsControllerGetCountParams,
+  options?: RequestInit,
+): Promise<dissertationsControllerGetCountResponse> => {
+  return fetchClient<dissertationsControllerGetCountResponse>(
+    getDissertationsControllerGetCountUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type departmentsControllerGetTeachingDepartmentsResponse200 = {
-  data: void
-  status: 200
-}
-
-export type departmentsControllerGetTeachingDepartmentsResponseSuccess = (departmentsControllerGetTeachingDepartmentsResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type departmentsControllerGetTeachingDepartmentsResponse = (departmentsControllerGetTeachingDepartmentsResponseSuccess)
+export type departmentsControllerGetTeachingDepartmentsResponseSuccess =
+  departmentsControllerGetTeachingDepartmentsResponse200 & {
+    headers: Headers;
+  };
+export type departmentsControllerGetTeachingDepartmentsResponse =
+  departmentsControllerGetTeachingDepartmentsResponseSuccess;
 
-export const getDepartmentsControllerGetTeachingDepartmentsUrl = (params?: DepartmentsControllerGetTeachingDepartmentsParams,) => {
+export const getDepartmentsControllerGetTeachingDepartmentsUrl = (
+  params?: DepartmentsControllerGetTeachingDepartmentsParams,
+) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
-
     if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : value.toString())
+      normalizedParams.append(key, value === null ? 'null' : value.toString());
     }
   });
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/api/v1/departments/teaching?${stringifiedParams}` : `/api/v1/departments/teaching`
-}
+  return stringifiedParams.length > 0
+    ? `/api/v1/departments/teaching?${stringifiedParams}`
+    : `/api/v1/departments/teaching`;
+};
 
-export const departmentsControllerGetTeachingDepartments = async (params?: DepartmentsControllerGetTeachingDepartmentsParams, options?: RequestInit): Promise<departmentsControllerGetTeachingDepartmentsResponse> => {
-
-  return fetchClient<departmentsControllerGetTeachingDepartmentsResponse>(getDepartmentsControllerGetTeachingDepartmentsUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const departmentsControllerGetTeachingDepartments = async (
+  params?: DepartmentsControllerGetTeachingDepartmentsParams,
+  options?: RequestInit,
+): Promise<departmentsControllerGetTeachingDepartmentsResponse> => {
+  return fetchClient<departmentsControllerGetTeachingDepartmentsResponse>(
+    getDepartmentsControllerGetTeachingDepartmentsUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type dictionaryControllerGetGroupsResponse200 = {
-  data: void
-  status: 200
-}
-
-export type dictionaryControllerGetGroupsResponseSuccess = (dictionaryControllerGetGroupsResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type dictionaryControllerGetGroupsResponse = (dictionaryControllerGetGroupsResponseSuccess)
+export type dictionaryControllerGetGroupsResponseSuccess =
+  dictionaryControllerGetGroupsResponse200 & {
+    headers: Headers;
+  };
+export type dictionaryControllerGetGroupsResponse = dictionaryControllerGetGroupsResponseSuccess;
 
 export const getDictionaryControllerGetGroupsUrl = () => {
+  return `/api/v1/dictionary/groups`;
+};
 
-
-
-
-  return `/api/v1/dictionary/groups`
-}
-
-export const dictionaryControllerGetGroups = async ( options?: RequestInit): Promise<dictionaryControllerGetGroupsResponse> => {
-
-  return fetchClient<dictionaryControllerGetGroupsResponse>(getDictionaryControllerGetGroupsUrl(),
-  {
+export const dictionaryControllerGetGroups = async (
+  options?: RequestInit,
+): Promise<dictionaryControllerGetGroupsResponse> => {
+  return fetchClient<dictionaryControllerGetGroupsResponse>(getDictionaryControllerGetGroupsUrl(), {
     ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+    method: 'GET',
+  });
+};
 
 export type dictionaryControllerGetDepartmentsResponse200 = {
-  data: void
-  status: 200
-}
-
-export type dictionaryControllerGetDepartmentsResponseSuccess = (dictionaryControllerGetDepartmentsResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type dictionaryControllerGetDepartmentsResponse = (dictionaryControllerGetDepartmentsResponseSuccess)
+export type dictionaryControllerGetDepartmentsResponseSuccess =
+  dictionaryControllerGetDepartmentsResponse200 & {
+    headers: Headers;
+  };
+export type dictionaryControllerGetDepartmentsResponse =
+  dictionaryControllerGetDepartmentsResponseSuccess;
 
 export const getDictionaryControllerGetDepartmentsUrl = () => {
+  return `/api/v1/dictionary/departments`;
+};
 
-
-
-
-  return `/api/v1/dictionary/departments`
-}
-
-export const dictionaryControllerGetDepartments = async ( options?: RequestInit): Promise<dictionaryControllerGetDepartmentsResponse> => {
-
-  return fetchClient<dictionaryControllerGetDepartmentsResponse>(getDictionaryControllerGetDepartmentsUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const dictionaryControllerGetDepartments = async (
+  options?: RequestInit,
+): Promise<dictionaryControllerGetDepartmentsResponse> => {
+  return fetchClient<dictionaryControllerGetDepartmentsResponse>(
+    getDictionaryControllerGetDepartmentsUrl(),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type dictionaryControllerGetDisciplinesResponse200 = {
-  data: void
-  status: 200
-}
-
-export type dictionaryControllerGetDisciplinesResponseSuccess = (dictionaryControllerGetDisciplinesResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type dictionaryControllerGetDisciplinesResponse = (dictionaryControllerGetDisciplinesResponseSuccess)
+export type dictionaryControllerGetDisciplinesResponseSuccess =
+  dictionaryControllerGetDisciplinesResponse200 & {
+    headers: Headers;
+  };
+export type dictionaryControllerGetDisciplinesResponse =
+  dictionaryControllerGetDisciplinesResponseSuccess;
 
 export const getDictionaryControllerGetDisciplinesUrl = () => {
+  return `/api/v1/dictionary/disciplines`;
+};
 
-
-
-
-  return `/api/v1/dictionary/disciplines`
-}
-
-export const dictionaryControllerGetDisciplines = async ( options?: RequestInit): Promise<dictionaryControllerGetDisciplinesResponse> => {
-
-  return fetchClient<dictionaryControllerGetDisciplinesResponse>(getDictionaryControllerGetDisciplinesUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const dictionaryControllerGetDisciplines = async (
+  options?: RequestInit,
+): Promise<dictionaryControllerGetDisciplinesResponse> => {
+  return fetchClient<dictionaryControllerGetDisciplinesResponse>(
+    getDictionaryControllerGetDisciplinesUrl(),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type dictionaryControllerGetFacultiesResponse200 = {
-  data: void
-  status: 200
-}
-
-export type dictionaryControllerGetFacultiesResponseSuccess = (dictionaryControllerGetFacultiesResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type dictionaryControllerGetFacultiesResponse = (dictionaryControllerGetFacultiesResponseSuccess)
+export type dictionaryControllerGetFacultiesResponseSuccess =
+  dictionaryControllerGetFacultiesResponse200 & {
+    headers: Headers;
+  };
+export type dictionaryControllerGetFacultiesResponse =
+  dictionaryControllerGetFacultiesResponseSuccess;
 
 export const getDictionaryControllerGetFacultiesUrl = () => {
+  return `/api/v1/dictionary/faculties`;
+};
 
-
-
-
-  return `/api/v1/dictionary/faculties`
-}
-
-export const dictionaryControllerGetFaculties = async ( options?: RequestInit): Promise<dictionaryControllerGetFacultiesResponse> => {
-
-  return fetchClient<dictionaryControllerGetFacultiesResponse>(getDictionaryControllerGetFacultiesUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const dictionaryControllerGetFaculties = async (
+  options?: RequestInit,
+): Promise<dictionaryControllerGetFacultiesResponse> => {
+  return fetchClient<dictionaryControllerGetFacultiesResponse>(
+    getDictionaryControllerGetFacultiesUrl(),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type dictionaryControllerGetLessonTypesResponse200 = {
-  data: void
-  status: 200
-}
-
-export type dictionaryControllerGetLessonTypesResponseSuccess = (dictionaryControllerGetLessonTypesResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type dictionaryControllerGetLessonTypesResponse = (dictionaryControllerGetLessonTypesResponseSuccess)
+export type dictionaryControllerGetLessonTypesResponseSuccess =
+  dictionaryControllerGetLessonTypesResponse200 & {
+    headers: Headers;
+  };
+export type dictionaryControllerGetLessonTypesResponse =
+  dictionaryControllerGetLessonTypesResponseSuccess;
 
 export const getDictionaryControllerGetLessonTypesUrl = () => {
+  return `/api/v1/dictionary/lesson-types`;
+};
 
-
-
-
-  return `/api/v1/dictionary/lesson-types`
-}
-
-export const dictionaryControllerGetLessonTypes = async ( options?: RequestInit): Promise<dictionaryControllerGetLessonTypesResponse> => {
-
-  return fetchClient<dictionaryControllerGetLessonTypesResponse>(getDictionaryControllerGetLessonTypesUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
+export const dictionaryControllerGetLessonTypes = async (
+  options?: RequestInit,
+): Promise<dictionaryControllerGetLessonTypesResponse> => {
+  return fetchClient<dictionaryControllerGetLessonTypesResponse>(
+    getDictionaryControllerGetLessonTypesUrl(),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};
 
 export type dictionaryControllerGetTeacherCategoriesResponse200 = {
-  data: void
-  status: 200
-}
-
-export type dictionaryControllerGetTeacherCategoriesResponseSuccess = (dictionaryControllerGetTeacherCategoriesResponse200) & {
-  headers: Headers;
+  data: void;
+  status: 200;
 };
-;
 
-export type dictionaryControllerGetTeacherCategoriesResponse = (dictionaryControllerGetTeacherCategoriesResponseSuccess)
+export type dictionaryControllerGetTeacherCategoriesResponseSuccess =
+  dictionaryControllerGetTeacherCategoriesResponse200 & {
+    headers: Headers;
+  };
+export type dictionaryControllerGetTeacherCategoriesResponse =
+  dictionaryControllerGetTeacherCategoriesResponseSuccess;
 
 export const getDictionaryControllerGetTeacherCategoriesUrl = () => {
+  return `/api/v1/dictionary/teacher-categories`;
+};
 
-
-
-
-  return `/api/v1/dictionary/teacher-categories`
-}
-
-export const dictionaryControllerGetTeacherCategories = async ( options?: RequestInit): Promise<dictionaryControllerGetTeacherCategoriesResponse> => {
-
-  return fetchClient<dictionaryControllerGetTeacherCategoriesResponse>(getDictionaryControllerGetTeacherCategoriesUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
-
+export const dictionaryControllerGetTeacherCategories = async (
+  options?: RequestInit,
+): Promise<dictionaryControllerGetTeacherCategoriesResponse> => {
+  return fetchClient<dictionaryControllerGetTeacherCategoriesResponse>(
+    getDictionaryControllerGetTeacherCategoriesUrl(),
+    {
+      ...options,
+      method: 'GET',
+    },
+  );
+};

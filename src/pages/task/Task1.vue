@@ -1,489 +1,42 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-
-import {
-  studentsControllerCreate,
-  studentsControllerGetStudents,
-} from '../../api/generated/institutAdministrationAPI';
-import {
-  type CreateStudentDto,
-  type StudentsControllerGetStudentsGender,
-  StudentsControllerGetStudentsGender as StudentsGender,
-} from '../../api/generated/institutAdministrationAPI.schemas';
-import AppInput from '../../components/common/AppInput.vue';
-import AppModal from '../../components/common/AppModal.vue';
-import AppSelect, { type SelectOption } from '../../components/common/AppSelect.vue';
-import AppTable, { type TableColumn } from '../../components/common/AppTable.vue';
-
-type RawStudent = Record<string, unknown>;
-
-type Student = {
-  id: number | null;
-  fullName: string;
-  genderValue: string;
-  genderLabel: string;
-  birthDate: string;
-  birthYear: number | null;
-  age: number | null;
-  childrenCount: number;
-  scholarshipAmount: number;
-  groupId: number | null;
-  group: string;
-  course: number | null;
-  faculty: string;
-};
-
-type Filters = {
-  faculty: string;
-  course: string;
-  group: string;
-  gender: string;
-  birthYear: string;
-  childrenCount: string;
-  minScholarship: string;
-};
-
-const students = ref<Student[]>([]);
-const studentsForFilters = ref<Student[]>([]);
-const loading = ref(false);
-const error = ref<string | null>(null);
-const isCreateModalOpen = ref(false);
-const isSavingStudent = ref(false);
-const createStudentError = ref<string | null>(null);
-
-type CreateStudentForm = {
-  firstName: string;
-  lastName: string;
-  gender: string;
-  birthDate: string;
-  childrenCount: string;
-  groupId: string;
-  scholarshipAmount: string;
-};
-
-const defaultFilters = (): Filters => ({
-  faculty: 'all',
-  course: 'all',
-  group: 'all',
-  gender: 'all',
-  birthYear: 'all',
-  childrenCount: 'all',
-  minScholarship: '',
-});
-
-const draftFilters = ref<Filters>(defaultFilters());
-const appliedFilters = ref<Filters>(defaultFilters());
-const createStudentForm = ref<CreateStudentForm>({
-  firstName: '',
-  lastName: '',
-  gender: '',
-  birthDate: '',
-  childrenCount: '0',
-  groupId: '',
-  scholarshipAmount: '0',
-});
-
-const parseNumber = (value: unknown): number | null => {
-  if (typeof value === 'number' && Number.isFinite(value)) {
-    return value;
-  }
-
-  if (typeof value === 'string' && value.trim() !== '') {
-    const parsed = Number(value);
-    return Number.isNaN(parsed) ? null : parsed;
-  }
-
-  return null;
-};
-
-const parseString = (value: unknown): string => {
-  return typeof value === 'string' ? value : '';
-};
-
-const parseGroupFields = (item: RawStudent): { groupId: number | null; groupName: string } => {
-  const directGroupId = parseNumber(item.groupId ?? item.group_id);
-  const directGroupName = parseString(item.group_name ?? item.groupName);
-
-  if (directGroupId !== null || directGroupName) {
-    return { groupId: directGroupId, groupName: directGroupName };
-  }
-
-  if (item.group && typeof item.group === 'object') {
-    const group = item.group as Record<string, unknown>;
-    return {
-      groupId: parseNumber(group.id ?? group.groupId ?? group.group_id),
-      groupName: parseString(group.name ?? group.title ?? group.groupName),
-    };
-  }
-
-  return { groupId: null, groupName: '' };
-};
-
-const normalizeGender = (value: unknown): string => {
-  const gender = parseString(value).toLowerCase();
-  if (gender === StudentsGender.male) {
-    return 'Мужской';
-  }
-
-  if (gender === StudentsGender.female) {
-    return 'Женский';
-  }
-
-  return '-';
-};
-
-const parseGenderValue = (value: unknown): string => {
-  const gender = parseString(value).toLowerCase();
-  if (gender === StudentsGender.male || gender === StudentsGender.female) {
-    return gender;
-  }
-
-  return '';
-};
-
-const calculateAge = (birthDate: string): number | null => {
-  if (!birthDate) {
-    return null;
-  }
-
-  const date = new Date(birthDate);
-  if (Number.isNaN(date.getTime())) {
-    return null;
-  }
-
-  const now = new Date();
-  let age = now.getFullYear() - date.getFullYear();
-  const monthDiff = now.getMonth() - date.getMonth();
-
-  if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < date.getDate())) {
-    age -= 1;
-  }
-
-  return age >= 0 ? age : null;
-};
-
-const formatBirthDate = (birthDate: string): string => {
-  if (!birthDate || birthDate === '-') {
-    return '-';
-  }
-
-  const date = new Date(birthDate);
-  if (Number.isNaN(date.getTime())) {
-    return '-';
-  }
-
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = String(date.getFullYear());
-
-  return `${day}.${month}.${year}`;
-};
-
-const toStudent = (item: RawStudent): Student => {
-  const firstName = parseString(item.first_name ?? item.firstName);
-  const lastName = parseString(item.last_name ?? item.lastName);
-  const fullName = [lastName, firstName].filter(Boolean).join(' ').trim();
-
-  const birthDate = parseString(item.birth_date ?? item.birthDate);
-  const birthYear = birthDate ? new Date(birthDate).getFullYear() : null;
-  const childrenCount = parseNumber(item.children_count ?? item.childrenCount) ?? 0;
-  const scholarshipAmount = parseNumber(item.scholarship_amount ?? item.scholarshipAmount) ?? 0;
-  const { groupId, groupName } = parseGroupFields(item);
-  const course = parseNumber(item.course);
-  const faculty = parseString(item.faculty ?? item.faculty_name);
-  const genderValue = parseGenderValue(item.gender);
-
-  return {
-    id: parseNumber(item.id),
-    fullName: fullName || 'Без имени',
-    genderValue,
-    genderLabel: normalizeGender(item.gender),
-    birthDate: birthDate || '-',
-    birthYear: birthYear && Number.isFinite(birthYear) ? birthYear : null,
-    age: calculateAge(birthDate),
-    childrenCount,
-    scholarshipAmount,
-    groupId,
-    group: groupName || (groupId !== null ? String(groupId) : '-'),
-    course,
-    faculty: faculty || '-',
-  };
-};
-
-const extractStudents = (payload: unknown): RawStudent[] => {
-  if (Array.isArray(payload)) {
-    return payload as RawStudent[];
-  }
-
-  if (payload && typeof payload === 'object') {
-    const record = payload as Record<string, unknown>;
-    const arrays = [record.data, record.students, record.items];
-
-    for (const candidate of arrays) {
-      if (Array.isArray(candidate)) {
-        return candidate as RawStudent[];
-      }
-    }
-  }
-
-  return [];
-};
-
-const fetchStudents = async (): Promise<void> => {
-  loading.value = true;
-  error.value = null;
-
-  try {
-    const genderFilter =
-      appliedFilters.value.gender === 'all'
-        ? undefined
-        : (appliedFilters.value.gender as StudentsControllerGetStudentsGender);
-    const courseFilter =
-      appliedFilters.value.course === 'all' ? undefined : [Number(appliedFilters.value.course)];
-    const minScholarship =
-      appliedFilters.value.minScholarship.trim() === ''
-        ? undefined
-        : Number(appliedFilters.value.minScholarship);
-
-    const response = await studentsControllerGetStudents({
-      faculty: appliedFilters.value.faculty === 'all' ? undefined : appliedFilters.value.faculty,
-      courses: courseFilter,
-      gender: genderFilter,
-      minScholarship,
-    });
-
-    students.value = extractStudents(response).map(toStudent);
-  } catch {
-    error.value = 'Не удалось получить студентов. Проверьте подключение к API.';
-    students.value = [];
-  } finally {
-    loading.value = false;
-  }
-};
-
-const applyFilters = (): void => {
-  appliedFilters.value = { ...draftFilters.value };
-  void fetchStudents();
-};
-
-const resetFilters = (): void => {
-  const reset = defaultFilters();
-  draftFilters.value = { ...reset };
-  appliedFilters.value = { ...reset };
-
-  void fetchStudents();
-};
-
-const facultyOptions = computed<SelectOption[]>(() => {
-  const uniqueValues = new Set(
-    studentsForFilters.value.map((student) => student.faculty).filter((value) => value !== '-'),
-  );
-  return [
-    { label: 'Все факультеты', value: 'all' },
-    ...Array.from(uniqueValues)
-      .sort()
-      .map((value) => ({ label: value, value })),
-  ];
-});
-
-const courseOptions = computed<SelectOption[]>(() => {
-  const uniqueValues = new Set(
-    studentsForFilters.value
-      .map((student) => student.course)
-      .filter((value): value is number => value !== null),
-  );
-  return [
-    { label: 'Все курсы', value: 'all' },
-    ...Array.from(uniqueValues)
-      .sort((a, b) => a - b)
-      .map((value) => ({ label: `${value} курс`, value: String(value) })),
-  ];
-});
-
-const genderOptions = computed<SelectOption[]>(() => {
-  const uniqueGenders = new Set(
-    studentsForFilters.value
-      .map((student) => student.genderValue)
-      .filter((value) => value === StudentsGender.male || value === StudentsGender.female),
-  );
-
-  return [
-    { label: 'Все', value: 'all' },
-    ...Array.from(uniqueGenders).map((value) => ({
-      label: value === StudentsGender.male ? 'Мужской' : 'Женский',
-      value,
-    })),
-  ];
-});
-
-const groupOptions = computed<SelectOption[]>(() => {
-  const uniqueGroups = new Set(
-    studentsForFilters.value.map((student) => student.group).filter((value) => value !== '-'),
-  );
-
-  return [
-    { label: 'Все группы', value: 'all' },
-    ...Array.from(uniqueGroups)
-      .sort((a, b) => a.localeCompare(b))
-      .map((value) => ({ label: value, value })),
-  ];
-});
-
-const birthYearOptions = computed<SelectOption[]>(() => {
-  const years = new Set(
-    studentsForFilters.value
-      .map((student) => student.birthYear)
-      .filter((value): value is number => value !== null),
-  );
-  return [
-    { label: 'Любой год', value: 'all' },
-    ...Array.from(years)
-      .sort((a, b) => b - a)
-      .map((value) => ({ label: String(value), value: String(value) })),
-  ];
-});
-
-const childrenOptions = computed<SelectOption[]>(() => {
-  const uniqueCounts = new Set(studentsForFilters.value.map((student) => student.childrenCount));
-
-  return [
-    { label: 'Любое количество', value: 'all' },
-    ...Array.from(uniqueCounts)
-      .sort((a, b) => a - b)
-      .map((value) => ({
-        label: `${value}`,
-        value: String(value),
-      })),
-  ];
-});
-
-const createStudentGenderOptions: SelectOption[] = [
-  { label: 'Выберите пол', value: '' },
-  { label: 'Мужской', value: StudentsGender.male },
-  { label: 'Женский', value: StudentsGender.female },
-];
-
-const createStudentGroupOptions = computed<SelectOption[]>(() => {
-  const optionsMap = new Map<string, string>();
-
-  console.log('studentsForFilters');
-  console.log(studentsForFilters.value);
-
-  for (const student of studentsForFilters.value) {
-    if (student.group === '-') {
-      continue;
-    }
-
-    console.log(student.groupId);
-    
-    if (student.groupId !== null) {
-      optionsMap.set(`id:${student.groupId}`, student.group);
-    } else {
-      optionsMap.set(`name:${student.group}`, student.group);
-    }
-  }
-
-  return [
-    { label: 'Выберите группу', value: '' },
-    ...Array.from(optionsMap.entries())
-      .sort((a, b) => a[1].localeCompare(b[1]))
-      .map(([value, name]) => ({ label: name, value })),
-  ];
-});
-
-const openCreateModal = (): void => {
-  createStudentError.value = null;
-  isCreateModalOpen.value = true;
-};
-
-const closeCreateModal = (): void => {
-  if (!isSavingStudent.value) {
-    isCreateModalOpen.value = false;
-  }
-};
-
-const createStudent = async (): Promise<void> => {
-  createStudentError.value = null;
-  const firstName = createStudentForm.value.firstName.trim();
-  const lastName = createStudentForm.value.lastName.trim();
-  const birthDate = createStudentForm.value.birthDate.trim();
-  const selectedGroupValue = createStudentForm.value.groupId;
-
-  console.log(selectedGroupValue);
-
-  let resolvedGroupId: number | null = null;
-  if (selectedGroupValue.startsWith('id:')) {
-    resolvedGroupId = parseNumber(selectedGroupValue.replace('id:', ''));
-  } else if (selectedGroupValue.startsWith('name:')) {
-    const selectedGroupName = selectedGroupValue.replace('name:', '');
-    const match = studentsForFilters.value.find(
-      (student) => student.group === selectedGroupName && student.groupId !== null,
-    );
-    resolvedGroupId = match?.groupId ?? null;
-  }
-
-  if (
-    !firstName ||
-    !lastName ||
-    !createStudentForm.value.gender ||
-    !birthDate ||
-    !selectedGroupValue
-  ) {
-    createStudentError.value =
-      'Заполните обязательные поля: имя, фамилия, пол, дата рождения и группа.';
-    return;
-  }
-
-  if (resolvedGroupId === null) {
-    createStudentError.value =
-      'Для выбранной группы не найден идентификатор. Проверьте данные API по группам.';
-    return;
-  }
-
-  isSavingStudent.value = true;
-  try {
-    const payload: CreateStudentDto = {
-      firstName,
-      lastName,
-      gender: createStudentForm.value.gender,
-      birthDate,
-      childrenCount: parseNumber(createStudentForm.value.childrenCount) ?? 0,
-      groupId: resolvedGroupId,
-      scholarshipAmount: parseNumber(createStudentForm.value.scholarshipAmount) ?? 0,
-    };
-    await studentsControllerCreate(payload);
-    createStudentForm.value = {
-      firstName: '',
-      lastName: '',
-      gender: '',
-      birthDate: '',
-      childrenCount: '0',
-      groupId: '',
-      scholarshipAmount: '0',
-    };
-    isCreateModalOpen.value = false;
-    await Promise.all([fetchStudentsForFilters(), fetchStudents()]);
-  } catch {
-    createStudentError.value = 'Не удалось создать студента.';
-  } finally {
-    isSavingStudent.value = false;
-  }
-};
-
-const filteredStudents = computed<Student[]>(() => {
-  return students.value.filter((student) => {
-    const isGroupMatched =
-      appliedFilters.value.group === 'all' || student.group === appliedFilters.value.group;
-    const isBirthYearMatched =
-      appliedFilters.value.birthYear === 'all' ||
-      String(student.birthYear) === appliedFilters.value.birthYear;
-    const isChildrenMatched =
-      appliedFilters.value.childrenCount === 'all' ||
-      student.childrenCount === Number(appliedFilters.value.childrenCount);
-
-    return isGroupMatched && isBirthYearMatched && isChildrenMatched;
-  });
-});
+import { computed, onMounted } from 'vue';
+
+import AppInput from '@/components/common/AppInput.vue';
+import AppModal from '@/components/common/AppModal.vue';
+import AppSelect from '@/components/common/AppSelect.vue';
+import AppTable, { type TableColumn } from '@/components/common/AppTable.vue';
+import { useStudents } from '@/composables/useStudents';
+import { useReferenceDataStore } from '@/stores/reference-data';
+import { formatBirthDate } from '@/utils/students';
+
+const referenceDataStore = useReferenceDataStore();
+
+const {
+  students,
+  loading,
+  error,
+  isCreateModalOpen,
+  isSavingStudent,
+  createStudentError,
+  draftFilters,
+  createStudentForm,
+  facultyOptions,
+  courseOptions,
+  genderOptions,
+  groupOptions,
+  birthYearOptions,
+  childrenOptions,
+  createStudentGenderOptions,
+  createStudentGroupOptions,
+  totalCount,
+  fetchStudents,
+  fetchStudentsForFilters,
+  applyFilters,
+  resetFilters,
+  openCreateModal,
+  closeCreateModal,
+  createStudent,
+} = useStudents();
 
 const tableColumns: TableColumn[] = [
   { key: 'id', title: 'ID' },
@@ -499,7 +52,7 @@ const tableColumns: TableColumn[] = [
 ];
 
 const tableRows = computed<Record<string, string | number>[]>(() => {
-  return filteredStudents.value.map((student) => ({
+  return students.value.map((student) => ({
     id: student.id ?? '-',
     fullName: student.fullName,
     faculty: student.faculty,
@@ -513,18 +66,8 @@ const tableRows = computed<Record<string, string | number>[]>(() => {
   }));
 });
 
-const totalCount = computed(() => filteredStudents.value.length);
-
-const fetchStudentsForFilters = async (): Promise<void> => {
-  try {
-    const response = await studentsControllerGetStudents();
-    studentsForFilters.value = extractStudents(response).map(toStudent);
-  } catch {
-    studentsForFilters.value = [];
-  }
-};
-
 onMounted(() => {
+  void referenceDataStore.loadReferenceData();
   void fetchStudentsForFilters();
   void fetchStudents();
 });
