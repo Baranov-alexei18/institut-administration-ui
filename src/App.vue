@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 
 import AppHeader from './components/layout/AppHeader.vue';
 import AppSidebar from './components/layout/AppSidebar.vue';
+import { useReferenceDataStore } from './stores/reference-data';
 
 const route = useRoute();
+const referenceDataStore = useReferenceDataStore();
 
 const pageTitle = computed<string>(() => {
   return (route.meta.title as string | undefined) ?? 'Institute Administration System';
+});
+
+onMounted(() => {
+  void referenceDataStore.loadReferenceData();
 });
 </script>
 

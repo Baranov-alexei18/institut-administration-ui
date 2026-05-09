@@ -14,6 +14,35 @@ export interface CreateUserDto {
   password: CreateUserDtoPassword;
 }
 
+export interface CreateStudentDto {
+  firstName?: string;
+  lastName?: string;
+  gender?: string;
+  birthDate?: string;
+  childrenCount?: number;
+  groupId?: number;
+  scholarshipAmount?: number;
+}
+
+export interface DissertationDto {
+  type: string;
+  topic: string;
+  defenseDate: string;
+}
+
+export interface CreateTeacherDto {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  birthDate: string;
+  childrenCount: number;
+  departmentId: number;
+  categoryId: number;
+  salary: number;
+  isPostgraduateStudent: boolean;
+  dissertations?: DissertationDto[];
+}
+
 export type StudentsControllerGetStudentsParams = {
 faculty?: string;
 courses?: number[];
@@ -31,4 +60,119 @@ export const StudentsControllerGetStudentsGender = {
   male: 'male',
   female: 'female',
 } as const;
+
+export type StudentsControllerGetByAssessmentParams = {
+groupId?: number;
+disciplineId?: number;
+type?: string;
+grade?: number;
+};
+
+export type StudentsControllerGetSessionStudentsParams = {
+semester?: number;
+year?: number;
+groupId?: number;
+course?: number;
+facultyId?: number;
+type: StudentsControllerGetSessionStudentsType;
+};
+
+export type StudentsControllerGetSessionStudentsType = typeof StudentsControllerGetSessionStudentsType[keyof typeof StudentsControllerGetSessionStudentsType];
+
+
+export const StudentsControllerGetSessionStudentsType = {
+  excellent: 'excellent',
+  no_threes: 'no_threes',
+  no_twos: 'no_twos',
+} as const;
+
+export type StudentsControllerGetStudentsByTeacherParams = {
+groupIds?: string[];
+teacherId?: number;
+disciplineIds?: string[];
+semesters?: string[];
+fromYear?: number;
+toYear?: number;
+grade?: number;
+};
+
+export type StudentsControllerGetThesesParams = {
+departmentId?: number;
+teacherId?: number;
+};
+
+export type TeachersControllerGetTeachersParams = {
+faculty?: string;
+departmentIds?: number[];
+categories?: string[];
+gender?: string;
+minAge?: number;
+maxAge?: number;
+minChildren?: number;
+minSalary?: number;
+isPhd?: boolean;
+isDoctor?: boolean;
+defenseFrom?: string;
+defenseTo?: string;
+};
+
+export type TeachersControllerGetByDisciplineParams = {
+disciplineId?: number;
+groupId?: number;
+course?: number;
+facultyId?: number;
+};
+
+export type TeachersControllerGetByLessonsParams = {
+groupId?: number;
+course?: number;
+facultyId?: number;
+lessonTypes?: string[];
+semester?: number;
+fromYear?: number;
+toYear?: number;
+};
+
+export type TeachersControllerGetExaminersParams = {
+groupIds?: number[];
+disciplineIds?: number[];
+semester?: number;
+year?: number;
+};
+
+export type TeachersControllerGetThesisSupervisorsParams = {
+departmentId?: number;
+facultyId?: number;
+categoryIds?: number[];
+};
+
+export type TeachersControllerGetWorkloadParams = {
+semester: number;
+teacherId?: number;
+departmentId?: number;
+};
+
+export type DissertationsControllerGetAllParams = {
+departmentIds?: number[];
+facultyIds?: number[];
+type?: string;
+from?: string;
+to?: string;
+};
+
+export type DissertationsControllerGetCountParams = {
+departmentIds?: number[];
+facultyIds?: number[];
+type?: string;
+from?: string;
+to?: string;
+};
+
+export type DepartmentsControllerGetTeachingDepartmentsParams = {
+groupId?: number;
+facultyId?: number;
+semester?: number;
+fromYear?: number;
+toYear?: number;
+};
 
