@@ -51,15 +51,19 @@ onMounted(() => {
     <header class="head">
       <h2 class="title">Руководители дипломных работ</h2>
       <p class="desc">
-        Получить список руководителей дипломных работ с указанной кафедры, либо факультета
-        полностью и раздельно по некоторым категориям преподавателей.
+        Получить список руководителей дипломных работ с указанной кафедры, либо факультета полностью
+        и раздельно по некоторым категориям преподавателей.
       </p>
     </header>
 
     <div class="filters">
       <AppSelect v-model="draftFilters.department" label="Кафедра" :options="departmentOptions" />
       <AppSelect v-model="draftFilters.faculty" label="Факультет" :options="facultyOptions" />
-      <AppSelect v-model="draftFilters.category" label="Категория" :options="categoryOptions" />
+      <AppSelect
+        v-model="draftFilters.category"
+        label="Категория преподавателя"
+        :options="categoryOptions"
+      />
     </div>
 
     <div class="actions">
