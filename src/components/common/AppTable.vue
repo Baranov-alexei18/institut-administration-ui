@@ -24,7 +24,9 @@ defineProps<{
       <tbody>
         <tr v-for="(row, index) in rows" :key="index">
           <td v-for="column in columns" :key="`${column.key}-${index}`">
-            {{ row[column.key] ?? '-' }}
+            <slot :name="column.key" :row="row" :index="index">
+              {{ row[column.key] ?? '-' }}
+            </slot>
           </td>
         </tr>
       </tbody>

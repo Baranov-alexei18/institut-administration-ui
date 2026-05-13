@@ -29,6 +29,7 @@ export const useStudents = () => {
   const isCreateModalOpen = ref(false);
   const isSavingStudent = ref(false);
   const createStudentError = ref<string | null>(null);
+  const editingStudentId = ref<number | null>(null);
 
   const draftFilters = ref<StudentsFilters>(defaultFilters());
   const appliedFilters = ref<StudentsFilters>(defaultFilters());
@@ -235,6 +236,16 @@ export const useStudents = () => {
       }
     }
 
+    const currentGroupId = createStudentForm.value.groupId;
+    if (currentGroupId && !optionsMap.has(currentGroupId)) {
+      const student = studentsForFilters.value.find(
+        (s) => s.groupId !== null && `id:${s.groupId}` === currentGroupId,
+      );
+      if (student) {
+        optionsMap.set(currentGroupId, student.group);
+      }
+    }
+
     return [
       { label: 'Выберите группу', value: '' },
       ...Array.from(optionsMap.entries())
@@ -262,6 +273,44 @@ export const useStudents = () => {
 
   const openCreateModal = (): void => {
     createStudentError.value = null;
+    editingStudentId.value = null;
+    createStudentForm.value = {
+      firstName: '',
+      lastName: '',
+      gender: '',
+      birthDate: '',
+      childrenCount: '0',
+      groupId: '',
+      scholarshipAmount: '0',
+    };
+    isCreateModalOpen.value = true;
+  };
+
+  const openEditModal = (student: Student): void => {
+    createStudentError.value = null;
+    editingStudentId.value = student.id;
+    const nameParts = student.fullName.split(' ');
+
+    let groupIdValue = '';
+    if (student.group !== '-') {
+      const matchingGroup = referenceGroups.value.find((group) => group.name === student.group);
+      if (matchingGroup && matchingGroup.id !== null) {
+        groupIdValue = `id:${matchingGroup.id}`;
+      } else if (student.groupId !== null) {
+        groupIdValue = `id:${student.groupId}`;
+      }
+    }
+
+    createStudentForm.value = {
+      firstName: nameParts[1] || '',
+      lastName: nameParts[0] || '',
+      gender: student.genderValue,
+      birthDate: student.birthDate || '',
+      childrenCount: String(student.childrenCount),
+      groupId: groupIdValue,
+      scholarshipAmount: String(student.scholarshipAmount),
+    };
+
     isCreateModalOpen.value = true;
   };
 
@@ -318,7 +367,13 @@ export const useStudents = () => {
         groupId: resolvedGroupId,
         scholarshipAmount: parseNumber(createStudentForm.value.scholarshipAmount) ?? 0,
       };
-      await studentsService.createStudent(payload);
+
+      if (editingStudentId.value !== null) {
+        await studentsService.updateStudent(editingStudentId.value, payload);
+      } else {
+        await studentsService.createStudent(payload);
+      }
+
       createStudentForm.value = {
         firstName: '',
         lastName: '',
@@ -328,14 +383,38 @@ export const useStudents = () => {
         groupId: '',
         scholarshipAmount: '0',
       };
+      editingStudentId.value = null;
       isCreateModalOpen.value = false;
       await Promise.all([fetchStudentsForFilters(), fetchStudents()]);
     } catch {
-      createStudentError.value = 'Не удалось создать студента.';
+      createStudentError.value =
+        editingStudentId.value !== null
+          ? 'Не удалось обновить студента.'
+          : 'Не удалось создать студента.';
     } finally {
       isSavingStudent.value = false;
     }
   };
+
+  const deleteStudent = async (studentId: number): Promise<void> => {
+    if (!confirm('Вы уверены, что хотите удалить этого студента?')) {
+      return;
+    }
+
+    try {
+      await studentsService.deleteStudent(studentId);
+      await Promise.all([fetchStudentsForFilters(), fetchStudents()]);
+    } catch {
+      error.value = 'Не удалось удалить студента.';
+    }
+  };
+
+  const modalTitle = computed(() =>
+    editingStudentId.value !== null ? 'Редактировать студента' : 'Создать студента',
+  );
+  const submitButtonText = computed(() =>
+    editingStudentId.value !== null ? 'Сохранить' : 'Создать',
+  );
 
   return {
     students: filteredStudents,
@@ -345,9 +424,11 @@ export const useStudents = () => {
     isCreateModalOpen,
     isSavingStudent,
     createStudentError,
+    editingStudentId,
+    modalTitle,
+    submitButtonText,
     draftFilters,
     appliedFilters,
-    createStudentForm,
     facultyOptions,
     courseOptions,
     genderOptions,
@@ -362,7 +443,10 @@ export const useStudents = () => {
     applyFilters,
     resetFilters,
     openCreateModal,
+    openEditModal,
     closeCreateModal,
     createStudent,
+    deleteStudent,
+    createStudentForm,
   };
 };

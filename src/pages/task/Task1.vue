@@ -18,6 +18,9 @@ const {
   isCreateModalOpen,
   isSavingStudent,
   createStudentError,
+  editingStudentId,
+  modalTitle,
+  submitButtonText,
   draftFilters,
   createStudentForm,
   facultyOptions,
@@ -34,8 +37,10 @@ const {
   applyFilters,
   resetFilters,
   openCreateModal,
+  openEditModal,
   closeCreateModal,
   createStudent,
+  deleteStudent,
 } = useStudents();
 
 const tableColumns: TableColumn[] = [
@@ -49,6 +54,7 @@ const tableColumns: TableColumn[] = [
   { key: 'age', title: 'Возраст' },
   { key: 'childrenCount', title: 'Дети' },
   { key: 'scholarshipAmount', title: 'Стипендия' },
+  { key: 'actions', title: 'Действия' },
 ];
 
 const tableRows = computed<Record<string, string | number>[]>(() => {
@@ -63,6 +69,7 @@ const tableRows = computed<Record<string, string | number>[]>(() => {
     age: student.age ?? '-',
     childrenCount: student.childrenCount,
     scholarshipAmount: student.scholarshipAmount,
+    actions: student.id ?? '-',
   }));
 });
 
@@ -126,7 +133,28 @@ onMounted(() => {
       :columns="tableColumns"
       :rows="tableRows"
       empty-text="Студенты по выбранным фильтрам не найдены."
-    />
+    >
+      <template #actions="{ row }">
+        <div class="actions-cell">
+          <button
+            v-if="row.id !== '-'"
+            type="button"
+            class="btn-icon edit"
+            @click="openEditModal(students.find((s) => s.id === row.id)!)"
+          >
+            ✏️
+          </button>
+          <button
+            v-if="row.id !== '-'"
+            type="button"
+            class="btn-icon delete"
+            @click="deleteStudent(row.id as number)"
+          >
+            🗑️
+          </button>
+        </div>
+      </template>
+    </AppTable>
 
     <AppModal
       v-model="isCreateModalOpen"
@@ -182,7 +210,7 @@ onMounted(() => {
           :disabled="isSavingStudent"
           @click="createStudent"
         >
-          {{ isSavingStudent ? 'Сохранение...' : 'Создать' }}
+          {{ isSavingStudent ? 'Сохранение...' : submitButtonText }}
         </button>
       </template>
     </AppModal>
@@ -270,6 +298,29 @@ onMounted(() => {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 12px;
   margin-bottom: 12px;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.btn-icon:hover {
+  background-color: var(--color-surface-alt);
+}
+
+.btn-icon.delete:hover {
+  background-color: #ffe5e5;
 }
 
 @media (max-width: 760px) {

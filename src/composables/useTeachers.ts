@@ -34,6 +34,7 @@ export const useTeachers = () => {
   const isCreateModalOpen = ref(false);
   const isSavingTeacher = ref(false);
   const createTeacherError = ref<string | null>(null);
+  const editingTeacherId = ref<number | null>(null);
 
   const draftFilters = ref<TeachersFilters>(defaultFilters());
   const appliedFilters = ref<TeachersFilters>(defaultFilters());
@@ -391,6 +392,65 @@ export const useTeachers = () => {
 
   const openCreateModal = (): void => {
     createTeacherError.value = null;
+    editingTeacherId.value = null;
+    createTeacherForm.value = {
+      firstName: '',
+      lastName: '',
+      gender: '',
+      birthDate: '',
+      childrenCount: '0',
+      departmentId: '',
+      categoryId: '',
+      salary: '0',
+      isPostgraduateStudent: false,
+      dissertationType: '',
+      dissertationTopic: '',
+      dissertationDefenseDate: '',
+    };
+    isCreateModalOpen.value = true;
+  };
+
+  const openEditModal = (teacher: Teacher): void => {
+    createTeacherError.value = null;
+    editingTeacherId.value = teacher.id;
+    const nameParts = teacher.fullName.split(' ');
+
+    let departmentIdValue = '';
+    if (teacher.department !== '-') {
+      const matchingDepartment = referenceDepartments.value.find(
+        (dept) => dept.name === teacher.department,
+      );
+      if (matchingDepartment && matchingDepartment.id !== null) {
+        departmentIdValue = `id:${matchingDepartment.id}`;
+      } else if (teacher.departmentId !== null) {
+        departmentIdValue = `id:${teacher.departmentId}`;
+      }
+    }
+
+    let categoryIdValue = '';
+    if (teacher.category !== '-') {
+      const matchingCategory = teacherCategories.value.find((cat) => cat.name === teacher.category);
+      if (matchingCategory && matchingCategory.id !== null) {
+        categoryIdValue = `id:${matchingCategory.id}`;
+      } else if (teacher.categoryId !== null) {
+        categoryIdValue = `id:${teacher.categoryId}`;
+      }
+    }
+
+    createTeacherForm.value = {
+      firstName: nameParts[1] || '',
+      lastName: nameParts[0] || '',
+      gender: teacher.genderValue,
+      birthDate: teacher.birthDate || '',
+      childrenCount: String(teacher.childrenCount),
+      departmentId: departmentIdValue,
+      categoryId: categoryIdValue,
+      salary: String(teacher.salary),
+      isPostgraduateStudent: teacher.isPostgraduateStudent,
+      dissertationType: teacher.hasPhD ? 'phd' : teacher.hasDoctorate ? 'doctor' : '',
+      dissertationTopic: '',
+      dissertationDefenseDate: teacher.dissertationDefenseDate || '',
+    };
     isCreateModalOpen.value = true;
   };
 
@@ -482,7 +542,13 @@ export const useTeachers = () => {
         isPostgraduateStudent: createTeacherForm.value.isPostgraduateStudent,
         dissertations: dissertations.length > 0 ? dissertations : undefined,
       };
-      await teachersService.createTeacher(payload);
+
+      if (editingTeacherId.value !== null) {
+        await teachersService.updateTeacher(editingTeacherId.value, payload);
+      } else {
+        await teachersService.createTeacher(payload);
+      }
+
       createTeacherForm.value = {
         firstName: '',
         lastName: '',
@@ -497,14 +563,38 @@ export const useTeachers = () => {
         dissertationTopic: '',
         dissertationDefenseDate: '',
       };
+      editingTeacherId.value = null;
       isCreateModalOpen.value = false;
       await Promise.all([fetchTeachersForFilters(), fetchTeachers()]);
     } catch {
-      createTeacherError.value = 'Не удалось создать преподавателя.';
+      createTeacherError.value =
+        editingTeacherId.value !== null
+          ? 'Не удалось обновить преподавателя.'
+          : 'Не удалось создать преподавателя.';
     } finally {
       isSavingTeacher.value = false;
     }
   };
+
+  const deleteTeacher = async (teacherId: number): Promise<void> => {
+    if (!confirm('Вы уверены, что хотите удалить этого преподавателя?')) {
+      return;
+    }
+
+    try {
+      await teachersService.deleteTeacher(teacherId);
+      await Promise.all([fetchTeachersForFilters(), fetchTeachers()]);
+    } catch {
+      error.value = 'Не удалось удалить преподавателя.';
+    }
+  };
+
+  const modalTitle = computed(() =>
+    editingTeacherId.value !== null ? 'Редактировать преподавателя' : 'Создать преподавателя',
+  );
+  const submitButtonText = computed(() =>
+    editingTeacherId.value !== null ? 'Сохранить' : 'Создать',
+  );
 
   return {
     teachers: filteredTeachers,
@@ -514,6 +604,9 @@ export const useTeachers = () => {
     isCreateModalOpen,
     isSavingTeacher,
     createTeacherError,
+    editingTeacherId,
+    modalTitle,
+    submitButtonText,
     draftFilters,
     appliedFilters,
     createTeacherForm,
@@ -534,7 +627,9 @@ export const useTeachers = () => {
     applyFilters,
     resetFilters,
     openCreateModal,
+    openEditModal,
     closeCreateModal,
     createTeacher,
+    deleteTeacher,
   };
 };

@@ -1,6 +1,8 @@
 import {
   teachersControllerCreate,
   teachersControllerGetTeachers,
+  teachersControllerUpdate,
+  teachersControllerRemove,
 } from '@/api/generated/institutAdministrationAPI';
 import type {
   CreateTeacherDto,
@@ -41,5 +43,13 @@ export const teachersService = {
 
   async createTeacher(payload: CreateTeacherDto): Promise<void> {
     await teachersControllerCreate(payload);
+  },
+
+  async updateTeacher(id: number, payload: CreateTeacherDto): Promise<void> {
+    await teachersControllerUpdate(id, payload);
+  },
+
+  async deleteTeacher(id: number): Promise<void> {
+    await teachersControllerRemove(id);
   },
 };

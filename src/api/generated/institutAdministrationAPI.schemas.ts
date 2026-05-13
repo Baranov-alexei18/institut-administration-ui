@@ -44,17 +44,17 @@ export interface CreateTeacherDto {
 }
 
 export type StudentsControllerGetStudentsParams = {
-  faculty?: string;
-  courses?: number[];
-  gender?: StudentsControllerGetStudentsGender;
-  minAge?: number;
-  maxAge?: number;
-  minChildren?: number;
-  minScholarship?: number;
+faculty?: string;
+courses?: number[];
+gender?: StudentsControllerGetStudentsGender;
+minAge?: number;
+maxAge?: number;
+minChildren?: number;
+minScholarship?: number;
 };
 
-export type StudentsControllerGetStudentsGender =
-  (typeof StudentsControllerGetStudentsGender)[keyof typeof StudentsControllerGetStudentsGender];
+export type StudentsControllerGetStudentsGender = typeof StudentsControllerGetStudentsGender[keyof typeof StudentsControllerGetStudentsGender];
+
 
 export const StudentsControllerGetStudentsGender = {
   male: 'male',
@@ -62,23 +62,23 @@ export const StudentsControllerGetStudentsGender = {
 } as const;
 
 export type StudentsControllerGetByAssessmentParams = {
-  groupId?: number;
-  disciplineId?: number;
-  type?: string;
-  grade?: number;
+groupId?: number;
+disciplineId?: number;
+type?: string;
+grade?: number;
 };
 
 export type StudentsControllerGetSessionStudentsParams = {
-  semester?: number;
-  year?: number;
-  groupId?: number;
-  course?: number;
-  facultyId?: number;
-  type: StudentsControllerGetSessionStudentsType;
+semester?: number;
+year?: number;
+groupId?: number;
+course?: number;
+facultyId?: number;
+type: StudentsControllerGetSessionStudentsType;
 };
 
-export type StudentsControllerGetSessionStudentsType =
-  (typeof StudentsControllerGetSessionStudentsType)[keyof typeof StudentsControllerGetSessionStudentsType];
+export type StudentsControllerGetSessionStudentsType = typeof StudentsControllerGetSessionStudentsType[keyof typeof StudentsControllerGetSessionStudentsType];
+
 
 export const StudentsControllerGetSessionStudentsType = {
   excellent: 'excellent',
@@ -87,91 +87,92 @@ export const StudentsControllerGetSessionStudentsType = {
 } as const;
 
 export type StudentsControllerGetStudentsByTeacherParams = {
-  groupIds?: string[];
-  teacherId?: number;
-  disciplineIds?: string[];
-  semesters?: string[];
-  fromYear?: number;
-  toYear?: number;
-  grade?: number;
+groupIds?: string[];
+teacherId?: number;
+disciplineIds?: string[];
+semesters?: string[];
+fromYear?: number;
+toYear?: number;
+grade?: number;
 };
 
 export type StudentsControllerGetThesesParams = {
-  departmentId?: number;
-  teacherId?: number;
+departmentId?: number;
+teacherId?: number;
 };
 
 export type TeachersControllerGetTeachersParams = {
-  faculty?: string;
-  departmentIds?: number[];
-  categories?: string[];
-  gender?: string;
-  minAge?: number;
-  maxAge?: number;
-  minChildren?: number;
-  minSalary?: number;
-  isPhd?: boolean;
-  isDoctor?: boolean;
-  defenseFrom?: string;
-  defenseTo?: string;
+faculty?: string;
+departmentIds?: number[];
+categories?: string[];
+gender?: string;
+minAge?: number;
+maxAge?: number;
+minChildren?: number;
+minSalary?: number;
+isPhd?: boolean;
+isDoctor?: boolean;
+defenseFrom?: string;
+defenseTo?: string;
 };
 
 export type TeachersControllerGetByDisciplineParams = {
-  disciplineId?: number;
-  groupId?: number;
-  course?: number;
-  facultyId?: number;
+disciplineId?: number;
+groupId?: number;
+course?: number;
+facultyId?: number;
 };
 
 export type TeachersControllerGetByLessonsParams = {
-  groupId?: number;
-  course?: number;
-  facultyId?: number;
-  lessonTypeIds?: number[];
-  semester?: number;
-  fromYear?: number;
-  toYear?: number;
+groupId?: number;
+course?: number;
+facultyId?: number;
+lessonTypeIds?: number[];
+semester?: number;
+fromYear?: number;
+toYear?: number;
 };
 
 export type TeachersControllerGetExaminersParams = {
-  groupIds?: number[];
-  disciplineIds?: number[];
-  semester?: number;
-  year?: number;
+groupIds?: number[];
+disciplineIds?: number[];
+semester?: number;
+year?: number;
 };
 
 export type TeachersControllerGetThesisSupervisorsParams = {
-  departmentId?: number;
-  facultyId?: number;
-  categoryIds?: number[];
+departmentId?: number;
+facultyId?: number;
+categoryIds?: number[];
 };
 
 export type TeachersControllerGetWorkloadParams = {
-  semester: number;
-  teacherId?: number;
-  departmentId?: number;
+semester: number;
+teacherId?: number;
+departmentId?: number;
 };
 
 export type DissertationsControllerGetAllParams = {
-  departmentIds?: number[];
-  facultyIds?: number[];
-  type?: string;
-  from?: string;
-  to?: string;
+departmentIds?: number[];
+facultyIds?: number[];
+type?: string;
+from?: string;
+to?: string;
 };
 
 export type DissertationsControllerGetCountParams = {
-  departmentIds?: number[];
-  facultyIds?: number[];
-  type?: string;
-  from?: string;
-  to?: string;
+departmentIds?: number[];
+facultyIds?: number[];
+type?: string;
+from?: string;
+to?: string;
 };
 
 export type DepartmentsControllerGetTeachingDepartmentsParams = {
-  groupId?: number;
-  facultyId?: number;
-  semester?: number;
-  fromYear?: number;
-  toYear?: number;
+groupId?: number;
+facultyId?: number;
+semester?: number;
+fromYear?: number;
+toYear?: number;
 };
+
