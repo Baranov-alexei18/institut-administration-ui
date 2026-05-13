@@ -18,6 +18,9 @@ const {
   isCreateModalOpen,
   isSavingTeacher,
   createTeacherError,
+  editingTeacherId,
+  modalTitle,
+  submitButtonText,
   draftFilters,
   createTeacherForm,
   facultyOptions,
@@ -37,8 +40,10 @@ const {
   applyFilters,
   resetFilters,
   openCreateModal,
+  openEditModal,
   closeCreateModal,
   createTeacher,
+  deleteTeacher,
 } = useTeachers();
 
 const tableColumns: TableColumn[] = [
@@ -53,22 +58,36 @@ const tableColumns: TableColumn[] = [
   { key: 'childrenCount', title: 'Дети' },
   { key: 'salary', title: 'Зарплата' },
   { key: 'degree', title: 'Наличие степени' },
+  { key: 'actions', title: 'Действия' },
 ];
 
 const tableRows = computed<Record<string, string | number>[]>(() => {
-  return teachers.value.map((teacher) => ({
-    id: teacher.id ?? '-',
-    fullName: teacher.fullName,
-    faculty: teacher.faculty,
-    department: teacher.department,
-    category: teacher.category,
-    gender: teacher.genderLabel,
-    birthDate: formatBirthDate(teacher.birthDate),
-    age: teacher.age ?? '-',
-    childrenCount: teacher.childrenCount,
-    salary: teacher.salary,
-    degree: teacher.degree,
-  }));
+  return teachers.value.map((teacher) => {
+    let categoryDisplay = teacher.category;
+    if (teacher.categoryId !== null && (categoryDisplay === '-' || /^\d+$/.test(categoryDisplay))) {
+      const matchingCategory = referenceDataStore.teacherCategories.find(
+        (cat) => cat.id === teacher.categoryId,
+      );
+      if (matchingCategory) {
+        categoryDisplay = matchingCategory.name;
+      }
+    }
+
+    return {
+      id: teacher.id ?? '-',
+      fullName: teacher.fullName,
+      faculty: teacher.faculty,
+      department: teacher.department,
+      category: categoryDisplay,
+      gender: teacher.genderLabel,
+      birthDate: formatBirthDate(teacher.birthDate),
+      age: teacher.age ?? '-',
+      childrenCount: teacher.childrenCount,
+      salary: teacher.salary,
+      degree: teacher.degree,
+      actions: teacher.id ?? '-',
+    };
+  });
 });
 
 onMounted(() => {
@@ -131,13 +150,30 @@ onMounted(() => {
       :columns="tableColumns"
       :rows="tableRows"
       empty-text="Преподаватели по выбранным фильтрам не найдены."
-    />
-
-    <AppModal
-      v-model="isCreateModalOpen"
-      title="Создать преподавателя"
-      :close-on-backdrop="!isSavingTeacher"
     >
+      <template #actions="{ row }">
+        <div class="actions-cell">
+          <button
+            v-if="row.id !== '-'"
+            type="button"
+            class="btn-icon edit"
+            @click="openEditModal(teachers.find((t) => t.id === row.id)!)"
+          >
+            ✏️
+          </button>
+          <button
+            v-if="row.id !== '-'"
+            type="button"
+            class="btn-icon delete"
+            @click="deleteTeacher(row.id as number)"
+          >
+            🗑️
+          </button>
+        </div>
+      </template>
+    </AppTable>
+
+    <AppModal v-model="isCreateModalOpen" :title="modalTitle" :close-on-backdrop="!isSavingTeacher">
       <div class="create-grid">
         <AppInput v-model="createTeacherForm.firstName" label="Имя" placeholder="Иван" />
         <AppInput v-model="createTeacherForm.lastName" label="Фамилия" placeholder="Иванов" />
@@ -215,7 +251,7 @@ onMounted(() => {
           :disabled="isSavingTeacher"
           @click="createTeacher"
         >
-          {{ isSavingTeacher ? 'Сохранение...' : 'Создать' }}
+          {{ isSavingTeacher ? 'Сохранение...' : submitButtonText }}
         </button>
       </template>
     </AppModal>
@@ -330,6 +366,29 @@ onMounted(() => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.btn-icon:hover {
+  background-color: var(--color-surface-alt);
+}
+
+.btn-icon.delete:hover {
+  background-color: #ffe5e5;
 }
 
 @media (max-width: 760px) {
